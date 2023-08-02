@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
 import {
@@ -8,19 +8,16 @@ import {
   SearchbarStyle,
 } from './Searchbar.styled';
 
-export class Searchbar extends Component {
-  state = {
-    value: '',
-    previousValue: '',
+export const Searchbar = ({ onSubmit }) => {
+  const [value, setValue] = useState('');
+  const [previousValue, setPreviousValue] = useState('');
+
+  const handleInputChange = event => {
+    setValue(event.target.value);
   };
 
-  handleInputChange = ({ target }) => {
-    this.setState({ value: target.value });
-  };
-
-  handleSubmit = e => {
+  const handleSubmit = e => {
     e.preventDefault();
-    const { value, previousValue } = this.state;
 
     if (value.trim() === '') {
       toast.info(
@@ -36,29 +33,26 @@ export class Searchbar extends Component {
       return;
     }
 
-    this.props.onSubmit(value);
-    this.setState({ previousValue: value });
+    setPreviousValue(value);
+    onSubmit(value);
   };
 
-  render() {
-    const { value } = this.state;
-    return (
-      <SearchbarStyle>
-        <SearchForm onSubmit={this.handleSubmit}>
-          <InputStyle
-            onChange={this.handleInputChange}
-            value={value}
-            type="text"
-            autoComplete="off"
-            placeholder="Search images and photos"
-          />
+  return (
+    <SearchbarStyle>
+      <SearchForm onSubmit={handleSubmit}>
+        <InputStyle
+          onChange={handleInputChange}
+          value={value}
+          type="text"
+          autoComplete="off"
+          placeholder="Search images and photos"
+        />
 
-          <SearchButton type="submit">Search</SearchButton>
-        </SearchForm>
-      </SearchbarStyle>
-    );
-  }
-}
+        <SearchButton type="submit">Search</SearchButton>
+      </SearchForm>
+    </SearchbarStyle>
+  );
+};
 
 Searchbar.propTypes = {
   onSubmit: PropTypes.func.isRequired,
