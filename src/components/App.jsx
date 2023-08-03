@@ -31,7 +31,7 @@ export const App = () => {
         }
 
         if (!photosLoaded) {
-          setPhotosLoaded(true);
+          // setPhotosLoaded(true);
           toast.success(`We found ${totalHits} photos`);
         }
       } catch (error) {
@@ -71,4 +71,3 @@ export const App = () => {
     </AppContainer>
   );
 };
-
